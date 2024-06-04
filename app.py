@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, render_template
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+import http.client
 import json
 
 app = Flask(__name__)
@@ -94,6 +95,51 @@ def recibir_mensajes(req):
         return jsonify({'message':'EVENT_RECEIVED'})
     except Exception as e:
         return jsonify({'message':'EVENT_RECEIVED'})
+    
+def enviar_mensajes_whatsapp(texto, number):
+    texto = texto.lower()
+
+    if "hola" in texto:
+        data = {
+             "messaging_product": "whatsapp",
+            "recipient_type": "individual",
+            "to": number,
+            "type": "text",
+            "text": {
+                "preview_url": False,
+                "body": "🚀 Hola, ¿Cómo estás? Bienvenido."
+            }
+        }
+    else:
+        data = {
+            "messaging_product": "whatsapp",
+            "recipient_type": "individual",
+            "to": number,
+            "type": "text",
+            "text": {
+                "preview_url": False,
+                "body": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+            }
+        }
+
+    #CONVERTIR EL DICCIONARIO A FORMATO JSON
+    data = json.dumps(data)
+
+    headers = {
+        "Content-Type" : "application/json",
+        "Authorization" : "Bearer EAAOEH3xitTkBO2Yk62TMtmZBzJpXi6bUZBMOaLzHSg7UvBFccadkQeir0G7MGKhZA2H2HizcaZB1Rk73RjkHXkrkG5XtycSUcNZCyBCloTIZCOynyY03ynzS9jjBAWgdLYovY3YYS5xgaX78zYhNxktkPh7go4ZAyTjS2RQAJ43MyO3CJ9L8YgfZCvZAGFbFtm3w2iZA4kuGqTGqZCMMt0OpwZDZD"
+    }
+
+    connection = http.client.HTTPSConnection("graph.facebook.com")
+
+    try:
+        connection.request("POST", "/v19.0/331842380014779/messages", data, headers)
+        response = connection.getresponse()
+        print(response.status, response.reason)
+    except Exception as e:
+        agregar_mensajes_log(json.dumps(e))
+    finally: 
+        connection.close()
 
 if __name__=='__main__':
     app.run(host='0.0.0.0',port=80,debug=True)
