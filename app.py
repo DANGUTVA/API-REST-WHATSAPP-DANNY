@@ -110,11 +110,21 @@ def recibir_mensajes(req):
     except Exception as e:
         return jsonify({'message':'EVENT_RECEIVED'})
     
-def enviar_mensajes_whatsapp(texto, number):
+def enviar_mensajes_whatsapp(texto,number):
     texto = texto.lower()
 
-    # Menú con mensaje inicial de bienvenida y con las demás opciones
-    if "hola" or "Buenas" or "buenas" or "1" in texto:
+    if "hola" in texto:
+        data={
+            "messaging_product": "whatsapp",
+            "recipient_type": "individual",
+            "to": number,
+            "type": "text",
+            "text": {
+                "preview_url": False,
+                "body": "🚀 Hola, ¿Cómo estás? Bienvenido."
+            }
+        }
+    elif "1" in texto:
         data = {
             "messaging_product": "whatsapp",
             "recipient_type": "individual",
@@ -122,21 +132,9 @@ def enviar_mensajes_whatsapp(texto, number):
             "type": "text",
             "text": {
                 "preview_url": False,
-                "body": (
-                    "🚀 Hola, ¿Cómo estás? Bienvenido.\n\n"
-                    "Por favor, ingresa un número #️⃣ para recibir información:\n\n"
-                    "1️⃣. Ver Menú de Opciones\n"
-                    "2️⃣. Ubicación del local. 📍\n"
-                    "3️⃣. Enviar temario en PDF. 📄\n"
-                    "4️⃣. Audio explicando curso. 🎧\n"
-                    "5️⃣. Video de Introducción. ⏯️\n"
-                    "6️⃣. Hablar con Mil Razones. 🙋‍♂️\n"
-                    "7️⃣. Horario de Atención. 🕜\n"
-                    "0️⃣. Regresar al Menú. 🕜"
-                )
+                "body": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
             }
         }
-    # Ubicación del local
     elif "2" in texto:
         data = {
             "messaging_product": "whatsapp",
@@ -149,21 +147,19 @@ def enviar_mensajes_whatsapp(texto, number):
                 "address": "Cercado de Lima"
             }
         }
-    # Enviar temario en PDF
     elif "3" in texto:
-        data = {
+        data={
             "messaging_product": "whatsapp",
             "recipient_type": "individual",
             "to": number,
             "type": "document",
             "document": {
-                "link": "https://www.turnerlibros.com/wp-content/uploads/2021/02/ejemplo.pdf",
-                "caption": "Temario del Curso #001"
+                    "link": "https://www.turnerlibros.com/wp-content/uploads/2021/02/ejemplo.pdf",
+                    "caption": "Temario del Curso #001"
+                }
             }
-        }
-    # Audio explicando curso
     elif "4" in texto:
-        data = {
+        data={
             "messaging_product": "whatsapp",
             "recipient_type": "individual",
             "to": number,
@@ -172,7 +168,6 @@ def enviar_mensajes_whatsapp(texto, number):
                 "link": "https://filesamples.com/samples/audio/mp3/sample1.mp3"
             }
         }
-    # Video de Introducción
     elif "5" in texto:
         data = {
             "messaging_product": "whatsapp",
@@ -182,7 +177,6 @@ def enviar_mensajes_whatsapp(texto, number):
                 "body": "Introduccion al curso! https://youtu.be/6ULOE2tGlBM"
             }
         }
-    # Hablar con AnderCode
     elif "6" in texto:
         data = {
             "messaging_product": "whatsapp",
@@ -194,7 +188,6 @@ def enviar_mensajes_whatsapp(texto, number):
                 "body": "🤝 En breve me pondre en contacto contigo. 🤓"
             }
         }
-    # Horario de Atención
     elif "7" in texto:
         data = {
             "messaging_product": "whatsapp",
@@ -206,7 +199,6 @@ def enviar_mensajes_whatsapp(texto, number):
                 "body": "📅 Horario de Atención : Lunes a Viernes. \n🕜 Horario : 9:00 am a 5:00 pm 🤓"
             }
         }
-    # Regresar al Menú
     elif "0" in texto:
         data = {
             "messaging_product": "whatsapp",
@@ -215,29 +207,17 @@ def enviar_mensajes_whatsapp(texto, number):
             "type": "text",
             "text": {
                 "preview_url": False,
-                "body": (
-                    "🚀 Hola, visita mi web milrazonescr.com para más información.\n\n"
-                    "📌Por favor, ingresa un número #️⃣ para recibir información:\n\n"
-                    "1️⃣. Ver Menú de Opciones\n"
-                    "2️⃣. Ubicación del local. 📍\n"
-                    "3️⃣. Enviar temario en PDF. 📄\n"
-                    "4️⃣. Audio explicando curso. 🎧\n"
-                    "5️⃣. Video de Introducción. ⏯️\n"
-                    "6️⃣. Hablar con Mil Razones. 🙋‍♂️\n"
-                    "7️⃣. Horario de Atención. 🕜\n"
-                    "0️⃣. Regresar al Menú. 🕜"
-                )
+                "body": "🚀 Hola, visita mi web anderson-bastidas.com para más información.\n \n📌Por favor, ingresa un número #️⃣ para recibir información.\n \n1️⃣. Información del Curso. ❔\n2️⃣. Ubicación del local. 📍\n3️⃣. Enviar temario en PDF. 📄\n4️⃣. Audio explicando curso. 🎧\n5️⃣. Video de Introducción. ⏯️\n6️⃣. Hablar con AnderCode. 🙋‍♂️\n7️⃣. Horario de Atención. 🕜 \n0️⃣. Regresar al Menú. 🕜"
             }
         }
-    # Confirmación con Botones
     elif "boton" in texto:
         data = {
             "messaging_product": "whatsapp",
             "recipient_type": "individual",
             "to": number,
             "type": "interactive",
-            "interactive": {
-                "type": "button",
+            "interactive":{
+                "type":"button",
                 "body": {
                     "text": "¿Confirmas tu registro?"
                 },
@@ -245,33 +225,30 @@ def enviar_mensajes_whatsapp(texto, number):
                     "text": "Selecciona una de las opciones"
                 },
                 "action": {
-                    "buttons": [
+                    "buttons":[
                         {
                             "type": "reply",
-                            "reply": {
-                                "id": "btnsi",
-                                "title": "Si"
+                            "reply":{
+                                "id":"btnsi",
+                                "title":"Si"
                             }
-                        },
-                        {
+                        },{
                             "type": "reply",
-                            "reply": {
-                                "id": "btnno",
-                                "title": "No"
+                            "reply":{
+                                "id":"btnno",
+                                "title":"No"
                             }
-                        },
-                        {
+                        },{
                             "type": "reply",
-                            "reply": {
-                                "id": "btntalvez",
-                                "title": "Tal Vez"
+                            "reply":{
+                                "id":"btntalvez",
+                                "title":"Tal Vez"
                             }
                         }
                     ]
                 }
             }
         }
-    # Respuestas a los botones
     elif "btnsi" in texto:
         data = {
             "messaging_product": "whatsapp",
@@ -305,49 +282,47 @@ def enviar_mensajes_whatsapp(texto, number):
                 "body": "Estare a la espera."
             }
         }
-    # Lista de opciones
     elif "lista" in texto:
-        data = {
+        data ={
             "messaging_product": "whatsapp",
             "to": number,
             "type": "interactive",
-            "interactive": {
-                "type": "list",
+            "interactive":{
+                "type" : "list",
                 "body": {
                     "text": "Selecciona Alguna Opción"
                 },
                 "footer": {
                     "text": "Selecciona una de las opciones para poder ayudarte"
                 },
-                "action": {
-                    "button": "Ver Opciones",
-                    "sections": [
+                "action":{
+                    "button":"Ver Opciones",
+                    "sections":[
                         {
-                            "title": "Compra y Venta",
-                            "rows": [
+                            "title":"Compra y Venta",
+                            "rows":[
                                 {
-                                    "id": "btncompra",
-                                    "title": "Comprar",
+                                    "id":"btncompra",
+                                    "title" : "Comprar",
                                     "description": "Compra los mejores articulos de tecnologia"
                                 },
                                 {
-                                    "id": "btnvender",
-                                    "title": "Vender",
+                                    "id":"btnvender",
+                                    "title" : "Vender",
                                     "description": "Vende lo que ya no estes usando"
                                 }
                             ]
-                        },
-                        {
-                            "title": "Distribución y Entrega",
-                            "rows": [
+                        },{
+                            "title":"Distribución y Entrega",
+                            "rows":[
                                 {
-                                    "id": "btndireccion",
-                                    "title": "Local",
+                                    "id":"btndireccion",
+                                    "title" : "Local",
                                     "description": "Puedes visitar nuestro local."
                                 },
                                 {
-                                    "id": "btnentrega",
-                                    "title": "Entrega",
+                                    "id":"btnentrega",
+                                    "title" : "Entrega",
                                     "description": "La entrega se realiza todos los dias."
                                 }
                             ]
@@ -356,7 +331,6 @@ def enviar_mensajes_whatsapp(texto, number):
                 }
             }
         }
-    # Respuestas a la lista
     elif "btncompra" in texto:
         data = {
             "messaging_product": "whatsapp",
@@ -365,7 +339,7 @@ def enviar_mensajes_whatsapp(texto, number):
             "type": "text",
             "text": {
                 "preview_url": False,
-                "body": "Los mejores artículos top en ofertas."
+                "body": "Los mejos articulos top en ofertas."
             }
         }
     elif "btnvender" in texto:
@@ -379,27 +353,15 @@ def enviar_mensajes_whatsapp(texto, number):
                 "body": "Excelente elección."
             }
         }
-    # Respuesta por defecto
     else:
-        data = {
+        data={
             "messaging_product": "whatsapp",
             "recipient_type": "individual",
             "to": number,
             "type": "text",
             "text": {
                 "preview_url": False,
-                "body": (
-                    "🚀 Hola, visita mi web milrazonescr.com para más información.\n\n"
-                    "📌Por favor, ingresa un número #️⃣ para recibir información:\n\n"
-                    "1️⃣. Ver Menú de Opciones\n"
-                    "2️⃣. Ubicación del local. 📍\n"
-                    "3️⃣. Enviar temario en PDF. 📄\n"
-                    "4️⃣. Audio explicando curso. 🎧\n"
-                    "5️⃣. Video de Introducción. ⏯️\n"
-                    "6️⃣. Hablar con Mil Razones. 🙋‍♂️\n"
-                    "7️⃣. Horario de Atención. 🕜\n"
-                    "0️⃣. Regresar al Menú. 🕜"
-                )
+                "body": "🚀 Hola, visita mi web anderson-bastidas.com para más información.\n \n📌Por favor, ingresa un número #️⃣ para recibir información.\n \n1️⃣. Información del Curso. ❔\n2️⃣. Ubicación del local. 📍\n3️⃣. Enviar temario en PDF. 📄\n4️⃣. Audio explicando curso. 🎧\n5️⃣. Video de Introducción. ⏯️\n6️⃣. Hablar con AnderCode. 🙋‍♂️\n7️⃣. Horario de Atención. 🕜 \n0️⃣. Regresar al Menú. 🕜"
             }
         }
 
