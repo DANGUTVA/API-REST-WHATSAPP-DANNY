@@ -79,14 +79,32 @@ def recibir_mensajes(req):
             if "type" in messages:
                 tipo = messages["type"]
 
-            if tipo =="interactive":
-                return 0
-            
-            if "text" in messages:
-                text = messages["text"]["body"]
-                numero = messages["from"]
+                #Guardar Log en la BD
+                agregar_mensajes_log(json.dumps(messages))
 
-                enviar_mensajes_whatsapp(text, numero)
+                if tipo == "interactive":
+                    tipo_interactivo = messages["interactive"]["type"]
+
+                    if tipo_interactivo == "button_reply":
+                        text = messages["interactive"]["button_reply"]["id"]
+                        numero = messages["from"]
+
+                        enviar_mensajes_whatsapp(text,numero)
+                    
+                    elif tipo_interactivo == "list_reply":
+                        text = messages["interactive"]["list_reply"]["id"]
+                        numero = messages["from"]
+
+                        enviar_mensajes_whatsapp(text,numero)
+
+                if "text" in messages:
+                    text = messages["text"]["body"]
+                    numero = messages["from"]
+
+                    enviar_mensajes_whatsapp(text,numero)
+
+                    #Guardar Log en la BD
+                    agregar_mensajes_log(json.dumps(messages))
 
         return jsonify({'message':'EVENT_RECEIVED'})
     except Exception as e:
@@ -159,7 +177,6 @@ def enviar_mensajes_whatsapp(texto, number):
         data = {
             "messaging_product": "whatsapp",
             "to": number,
-            "type": "text",
             "text": {
                 "preview_url": True,
                 "body": "Introduccion al curso! https://youtu.be/6ULOE2tGlBM"
