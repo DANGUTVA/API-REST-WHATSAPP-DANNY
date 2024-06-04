@@ -95,20 +95,8 @@ def recibir_mensajes(req):
 def enviar_mensajes_whatsapp(texto, number):
     texto = texto.lower()
 
-    # Mensaje inicial de bienvenida
-    if "hola" in texto:
-        data = {
-            "messaging_product": "whatsapp",
-            "recipient_type": "individual",
-            "to": number,
-            "type": "text",
-            "text": {
-                "preview_url": False,
-                "body": "🚀 Hola, ¿Cómo estás? Bienvenido."
-            }
-        }
-    # Menú con las demás opciones
-    elif "1" in texto:
+    # Menú con mensaje inicial de bienvenida y con las demás opciones
+    if "hola" or "Buenas" or "buenas" or "1" in texto:
         data = {
             "messaging_product": "whatsapp",
             "recipient_type": "individual",
@@ -117,6 +105,7 @@ def enviar_mensajes_whatsapp(texto, number):
             "text": {
                 "preview_url": False,
                 "body": (
+                    "🚀 Hola, ¿Cómo estás? Bienvenido.\n\n"
                     "Por favor, ingresa un número #️⃣ para recibir información:\n\n"
                     "1️⃣. Ver Menú de Opciones\n"
                     "2️⃣. Ubicación del local. 📍\n"
